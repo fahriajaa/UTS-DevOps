@@ -21,7 +21,7 @@ def connect_db(max_retries=10, delay=3):
             )
             print("✅ Berhasil konek ke database!")
             return conn
-        except Exception as e:
+        except Exception:
             print(f"⏳ Menunggu database... ({i+1}/{max_retries})")
             time.sleep(delay)
     
