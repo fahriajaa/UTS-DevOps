@@ -1,6 +1,6 @@
-# 📊 Aplikasi Analisis Penjualan Rumah Makan (DevOps)
+# Aplikasi Analisis Penjualan Rumah Makan (DevOps)
 
-## 📌 Deskripsi
+##  Deskripsi
 
 Project ini merupakan aplikasi sederhana berbasis Python yang digunakan untuk:
 
@@ -11,12 +11,12 @@ Project ini merupakan aplikasi sederhana berbasis Python yang digunakan untuk:
 
 Project ini juga telah diintegrasikan dengan:
 
-* 🐳 Docker & Docker Compose
-* ⚙️ GitHub Actions (CI Pipeline)
+* Docker & Docker Compose
+*  GitHub Actions (CI Pipeline)
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## Teknologi yang Digunakan
 
 * Python 3.9
 * PostgreSQL
@@ -28,7 +28,7 @@ Project ini juga telah diintegrasikan dengan:
 
 ---
 
-## 📂 Struktur Project
+##  Struktur Project
 
 ```
 .
@@ -44,7 +44,7 @@ Project ini juga telah diintegrasikan dengan:
 
 ---
 
-## 🚀 Cara Menjalankan Project
+## Cara Menjalankan Project
 
 ### 1. Clone Repository
 
@@ -73,36 +73,30 @@ Program akan menampilkan:
 * Detail data
 
 Selain itu, file CSV akan otomatis dibuat:
-
 ```
 data_penjualan.csv
 ```
+##  Fitur Utama
 
----
-
-## 🧠 Fitur Utama
-
-### ✅ Koneksi Database dengan Retry
+###  Koneksi Database dengan Retry
 
 Aplikasi akan menunggu database siap sebelum terhubung.
 
-### ✅ Insert Data Otomatis
+###  Insert Data Otomatis
 
 Data penjualan dimasukkan ke database secara otomatis.
 
-### ✅ Analisis Data
+###  Analisis Data
 
 * Total penjualan
 * Menu terlaris
 * Rata-rata transaksi
 
-### ✅ Export ke CSV
+### Export ke CSV
 
 Data disimpan dalam format CSV menggunakan Pandas.
 
----
-
-## ⚙️ CI/CD (GitHub Actions)
+## CI/CD (GitHub Actions)
 
 Project ini menggunakan GitHub Actions untuk:
 
@@ -111,26 +105,14 @@ Project ini menggunakan GitHub Actions untuk:
 
 Workflow akan berjalan otomatis saat push ke branch `main`.
 
----
+## Contoh Output
 
-## 📊 Contoh Output
-
-```
-=== LAPORAN PENJUALAN RUMAH MAKAN ===
+*LAPORAN PENJUALAN RUMAH MAKAN*
 Total Penjualan       : Rp 107000
 Menu Terlaris         : Ayam Geprek - 2 terjual
 Rata-rata Transaksi   : Rp 26750
-```
 
----
-
-## 👨‍💻 Author
+## Author
 
 * Nama: Fahri Akbar
 * Mata Kuliah: DevOps for Data Science
-
----
-
-## 📌 Catatan
-
-Project ini dibuat untuk memenuhi tugas UTS dan dapat dikembangkan lebih lanjut untuk kebutuhan aplikasi yang lebih kompleks.
