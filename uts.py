@@ -106,3 +106,4 @@ print("\nData berhasil disimpan ke file: data_penjualan.csv")
 
 cur.close()
 conn.close()
+
