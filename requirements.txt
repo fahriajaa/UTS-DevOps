@@ -1,2 +1,2 @@
-psycopg2
-time
+pandas
+psycopg2-binary

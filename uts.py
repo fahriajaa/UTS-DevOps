@@ -1,21 +1,34 @@
+import pandas as pd
 import psycopg2
 import time
+import os
 
-# Fungsi koneksi (pakai retry biar tidak error saat DB belum siap)
-def connect_db():
-    while True:
+# Ambil konfigurasi dari environment (dari docker-compose)
+DB_HOST = os.getenv("DB_HOST", "db")
+DB_NAME = os.getenv("POSTGRES_DB", "testdb")
+DB_USER = os.getenv("POSTGRES_USER", "user")
+DB_PASS = os.getenv("POSTGRES_PASSWORD", "password")
+
+# Fungsi koneksi dengan batas retry
+def connect_db(max_retries=10, delay=3):
+    for i in range(max_retries):
         try:
             conn = psycopg2.connect(
-                host="db",          # untuk Docker
-                database="testdb",
-                user="user",
-                password="password"
+                host=DB_HOST,
+                database=DB_NAME,
+                user=DB_USER,
+                password=DB_PASS
             )
+            print("✅ Berhasil konek ke database!")
             return conn
-        except:
-            print("Menunggu database siap...")
-            time.sleep(3)
+        except Exception as e:
+            print(f"⏳ Menunggu database... ({i+1}/{max_retries})")
+            time.sleep(delay)
+    
+    print("❌ Gagal konek ke database setelah beberapa percobaan!")
+    exit()
 
+# Koneksi
 conn = connect_db()
 cur = conn.cursor()
 
@@ -30,7 +43,7 @@ CREATE TABLE IF NOT EXISTS penjualan (
 )
 """)
 
-# Data penjualan (bisa kamu ubah biar beda dari teman)
+# Data penjualan
 data_penjualan = [
     ("Ayam Geprek", 18000, 2),
     ("Nasi Goreng Seafood", 20000, 1),
@@ -49,24 +62,21 @@ for nama, harga, jumlah in data_penjualan:
 conn.commit()
 
 # ======================
-# 📊 ANALISIS SEDERHANA
+# ANALISIS
 # ======================
 
-# Total penjualan
 cur.execute("SELECT SUM(total) FROM penjualan")
 total_penjualan = cur.fetchone()[0]
 
-# Menu terlaris (berdasarkan jumlah)
 cur.execute("""
-SELECT nama_menu, SUM(jumlah) as total_jual
+SELECT nama_menu, SUM(jumlah)
 FROM penjualan
 GROUP BY nama_menu
-ORDER BY total_jual DESC
+ORDER BY SUM(jumlah) DESC
 LIMIT 1
 """)
 menu_terlaris = cur.fetchone()
 
-# Rata-rata transaksi
 cur.execute("SELECT AVG(total) FROM penjualan")
 rata_rata = cur.fetchone()[0]
 
@@ -79,12 +89,25 @@ print("Total Penjualan       : Rp", total_penjualan)
 print("Menu Terlaris         :", menu_terlaris[0], "-", menu_terlaris[1], "terjual")
 print("Rata-rata Transaksi   : Rp", int(rata_rata))
 
+
 print("\nDetail Data:")
 cur.execute("SELECT * FROM penjualan")
 rows = cur.fetchall()
 
+# Print ke terminal
 for row in rows:
     print(row)
+
+# Ambil nama kolom
+colnames = [desc[0] for desc in cur.description]
+
+# Buat DataFrame
+df = pd.DataFrame(rows, columns=colnames)
+
+# Simpan ke CSV
+df.to_csv("data_penjualan.csv", index=False)
+
+print("\n📁 Data berhasil disimpan ke file: data_penjualan.csv")
 
 cur.close()
 conn.close()
