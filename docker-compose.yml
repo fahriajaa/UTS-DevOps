@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:13
+    container_name: db_uts
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: uts_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: python_app_uts
+    depends_on:
+      - db
+    environment:
+      container: app
+    volumes:
+      - .:/app/output
+    command: python uts.py
+
+volumes:
+  db_data:
